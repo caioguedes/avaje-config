@@ -83,6 +83,16 @@ class InitialLoader {
     return eval();
   }
 
+  private void loadViaProfiles() {
+    final String profiles = System.getProperty("config.profiles.active", System.getenv("CONFIG_PROFILES_ACTIVE"));
+    if (profiles != null) {
+      for (String profile: splitPaths(profiles)) {
+        loadYaml("application-" + profile + ".yaml", RESOURCE);
+        loadProperties("application-" + profile + ".properties", RESOURCE);
+      }
+    }
+  }
+
   void initWatcher(CoreConfiguration configuration) {
     if (configuration.getBool("config.watch.enabled", false)) {
       configuration.setWatcher(new FileWatch(configuration, loadContext.loadedFiles(), yamlLoader));
@@ -113,6 +123,7 @@ class InitialLoader {
     loadMain(FILE);
     loadViaSystemProperty();
     loadViaIndirection();
+    loadViaProfiles();
     // test configuration (if found) overrides main configuration
     // we should only find these resources when running tests
     if (!loadTest()) {

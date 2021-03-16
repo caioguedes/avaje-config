@@ -1,0 +1,3 @@
+service:
+  service2:
+    name: ${service.default.prefix}-service2

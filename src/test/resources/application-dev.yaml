@@ -1,0 +1,5 @@
+service:
+  default:
+    prefix: foo
+  service1:
+    name: ${service.default.prefix}-service1

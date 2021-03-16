@@ -110,4 +110,16 @@ public class InitialLoaderTest {
     loader.loadViaCommandLine(new String[]{"-p", "test-dummy2.yaml"});
     assertEquals(1, loader.size());
   }
+
+  @Test
+  public void loadProfilesResources() {
+    System.setProperty("config.profiles.active", "dev,dev2");
+
+    InitialLoader loader = new InitialLoader();
+
+    Properties properties = loader.load();
+
+    assertEquals(properties.get("service.service1.name"), "foo-service1");
+    assertEquals(properties.get("service.service2.name"), "foo-service2");
+  }
 }
